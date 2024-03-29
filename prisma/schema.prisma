@@ -1,0 +1,118 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+// Modelo Usuario
+model User {
+  id        Int         @id @default(autoincrement())
+  email     String      @unique
+  password  String      @db.VarChar(80)
+  // Relación uno a muchos con la tabla Prospect, Service, Quotation
+  prospects Prospect[]
+  services  Service[]
+  quotation Quotation[]
+}
+
+// Modelo de Prospecto
+model Prospect {
+  id                  Int         @id @default(autoincrement())
+  user                User        @relation(fields: [user_id_fk], references: [id])
+  user_id_fk          Int
+  organization_name   String      @db.VarChar(50)
+  contact_person      String      @db.VarChar(100)
+  type                String      @db.VarChar(20)
+  email               String      @db.VarChar(50)
+  identity_document   String      @db.VarChar(30)
+  whatsapp            String      @db.VarChar(20)
+  contact_number      String      @db.VarChar(20)
+  first_contract_date DateTime
+  last_contract_date  DateTime
+  // Relación con la tabla Quotation
+  quotation           Quotation[]
+}
+
+// Modelo de Servicio
+model Service {
+  id           Int         @id @default(autoincrement())
+  user         User        @relation(fields: [user_ID], references: [id])
+  user_ID      Int
+  service_name String      @db.VarChar(50)
+  description  String      @db.VarChar(200)
+  // Relación con la tabla Quotation
+  quotation    Quotation[]
+}
+
+// Modelo Cotizacion
+model Quotation {
+  id                  Int      @id @default(autoincrement())
+  prospect            Prospect @relation(fields: [prospect_id_fk], references: [id])
+  prospect_id_fk      Int
+  service             Service  @relation(fields: [service_id_fk], references: [id])
+  service_id_fk       Int
+  user                User     @relation(fields: [user_id_fk], references: [id])
+  user_id_fk          Int
+  net_amount          Decimal  @db.Decimal(10, 2)
+  discount            Decimal  @db.Decimal(5, 4)
+  quotation_date      DateTime
+  final_delivery_date DateTime
+  description         String   @db.VarChar(200)
+  important           String   @db.VarChar(300)
+  billing             String   @db.VarChar(300)
+  igv_included        Boolean
+  type_currency       String   @db.VarChar(20)
+  bank                String   @db.VarChar(50)
+  bank_code           Decimal  @db.Decimal(20, 0)
+  interbank_code      Decimal  @db.Decimal(20, 0)
+  detraction_account  Decimal  @db.Decimal(20, 0)
+
+  //Relación al Stage model
+  stage Stage[]
+}
+
+//Modelo Etapa
+model Stage {
+  id              Int       @id @default(autoincrement())
+  quotation       Quotation @relation(fields: [quotation_id_fk], references: [id])
+  quotation_id_fk Int
+  stage_name      String    @db.VarChar(50)
+  delivery_time   DateTime
+  percentage      Decimal   @db.Decimal(3, 2)
+  advance_payment Decimal   @db.Decimal(10, 2)
+  activities      String    @db.VarChar(150)
+}
+
+//Modelo Datos Empresa
+model CompanyData {
+  id                 Int        @id @default(autoincrement())
+  commercial_name    String     @db.VarChar(50)
+  detraction_account String     @db.VarChar(50)
+  ruc                String     @db.VarChar(30)
+  business_name      String     @db.VarChar(50)
+  exchange_type      String     @db.VarChar(20)
+  address            String     @db.VarChar(50)
+  contact_number     String     @db.VarChar(20)
+  company_email      String     @db.VarChar(50)
+  bankData           BankData[]
+}
+
+// Modelo Datos Bancarios
+model BankData {
+  id                Int         @id @default(autoincrement())
+  companyData       CompanyData @relation(fields: [companyData_id_fk], references: [id])
+  companyData_id_fk Int
+  bank_name         String      @db.VarChar(50)
+  bank_code         Decimal     @db.Decimal(20, 0)
+  interbank_code    Decimal     @db.Decimal(20, 0)
+  currency_type     String      @db.VarChar(20)
+}

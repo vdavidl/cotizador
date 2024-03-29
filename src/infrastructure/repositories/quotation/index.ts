@@ -1,0 +1,1 @@
+export {QuotationRepositoryImpl} from './quotation.repository.impl'

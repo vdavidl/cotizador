@@ -1,0 +1,1 @@
+export {ProspectRepositoryImpl} from './prospect.repository.impl'

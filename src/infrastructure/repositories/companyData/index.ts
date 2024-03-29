@@ -1,0 +1,1 @@
+export {CompanyDataRepositoryImpl} from './companyData.repository.impl'
