@@ -108,11 +108,11 @@ model CompanyData {
 
 // Modelo Datos Bancarios
 model BankData {
-  id                Int         @id @default(autoincrement())
-  companyData       CompanyData @relation(fields: [companyData_id_fk], references: [id])
-  companyData_id_fk Int
-  bank_name         String      @db.VarChar(50)
-  bank_code         Decimal     @db.Decimal(20, 0)
-  interbank_code    Decimal     @db.Decimal(20, 0)
-  currency_type     String      @db.VarChar(20)
+  id                 Int         @id @default(autoincrement())
+  company_data       CompanyData @relation(fields: [company_data_id_fk], references: [id])
+  company_data_id_fk Int
+  bank_name          String      @db.VarChar(50)
+  bank_code          Decimal     @db.Decimal(20, 0)
+  interbank_code     Decimal     @db.Decimal(20, 0)
+  currency_type      String      @db.VarChar(20)
 }
