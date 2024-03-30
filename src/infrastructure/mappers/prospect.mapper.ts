@@ -11,8 +11,8 @@ export class ProspectEntityMapper {
       email: prospect.email,
       identity_document: prospect.identity_document,
       whatsapp: prospect.whatsapp,
-      first_contract_date: prospect.first_contract_date,
-      last_contract_date: prospect.last_contract_date,
+      first_contact_date: prospect.first_contact_date,
+      last_contact_date: prospect.last_contact_date,
     }).props;
   }
 }
@@ -29,7 +29,7 @@ export class ProspectListEntityMapper {
       // email:    prospect.email,
       identity_document: prospect.identity_document,
       whatsapp: prospect.whatsapp,
-      last_contact_date: prospect.last_contract_date,
+      last_contact_date: prospect.last_contact_date,
     }).props;
   }
 }

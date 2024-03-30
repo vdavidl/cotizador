@@ -9,8 +9,8 @@ export class CreateProspectDto {
     public readonly email: string,
     public readonly identity_document: string,
     public readonly whatsapp: string,
-    public readonly first_contract_date: Date,
-    public readonly last_contract_date: Date
+    public readonly first_contact_date: Date,
+    public readonly last_contact_date: Date
   ) {}
 
   static create(obj: { [key: string]: any }): [string?, CreateProspectDto?] {
@@ -22,8 +22,8 @@ export class CreateProspectDto {
       email,
       identity_document,
       whatsapp,
-      first_contract_date,
-      last_contract_date,
+      first_contact_date,
+      last_contact_date,
     } = obj;
 
     //Lista de campos requeridos
@@ -35,8 +35,8 @@ export class CreateProspectDto {
       "email",
       "identity_document",
       "whatsapp",
-      "first_contract_date",
-      "last_contract_date",
+      "first_contact_date",
+      "last_contact_date",
     ];
 
     for (let field of requiredFields) {
@@ -48,8 +48,8 @@ export class CreateProspectDto {
 
     //Verifica fecha de formato válido
     if (
-      isNaN(Date.parse(first_contract_date)) ||
-      isNaN(Date.parse(last_contract_date))
+      isNaN(Date.parse(first_contact_date)) ||
+      isNaN(Date.parse(last_contact_date))
     )
       return ["Invalid date format"];
 
@@ -67,8 +67,8 @@ export class CreateProspectDto {
         email,
         identity_document,
         whatsapp,
-        first_contract_date,
-        last_contract_date
+        first_contact_date,
+        last_contact_date
       ),
     ];
   }

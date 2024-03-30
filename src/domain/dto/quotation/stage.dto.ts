@@ -22,7 +22,17 @@ export class StageDto {
     if (!advance_payment) return ["Missing advance_payment"];
     if (!activities) return ["Missing activities"];
 
-    if (percentage) return [""];
+    // Validación y conversión a decimal para percentage
+    const percentageDecimal = parseFloat(percentage);
+    if (isNaN(percentageDecimal)) {
+      return ["Percentage must be a valid decimal number (e.g., 0.25, 1.00)"];
+    }
+    if (percentageDecimal < 0 || percentageDecimal > 1.0) {
+      return ["Percentage must be between 0.0 and 1.0"];
+    }
+    if (percentageDecimal.toFixed(2) !== percentage) {
+      return ["Percentage can have up to 2 decimal places"];
+    }
 
     return [
       undefined,

@@ -7,8 +7,8 @@ export interface ProspectModel {
   email: string;
   identity_document: string;
   whatsapp: string;
-  first_contract_date: Date;
-  last_contract_date: Date;
+  first_contact_date: Date;
+  last_contact_date: Date;
 }
 
 export interface ProspectListModel {
@@ -19,5 +19,5 @@ export interface ProspectListModel {
   // email:    string;
   identity_document: string;
   whatsapp: string;
-  last_contract_date: Date;
+  last_contact_date: Date;
 }

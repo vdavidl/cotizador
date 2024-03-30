@@ -15,31 +15,39 @@ datasource db {
 
 // Modelo Usuario
 model User {
-  id        Int         @id @default(autoincrement())
-  email     String      @unique
-  password  String      @db.VarChar(80)
+  id       Int      @id @default(autoincrement())
+  email    String   @unique @db.VarChar(50)
+  name     String   @db.VarChar(150)
+  password String   @db.VarChar(100)
+  type     UserType
+
   // Relación uno a muchos con la tabla Prospect, Service, Quotation
   prospects Prospect[]
   services  Service[]
   quotation Quotation[]
 }
 
+enum UserType {
+  Admin
+  Normal
+}
+
 // Modelo de Prospecto
 model Prospect {
-  id                  Int         @id @default(autoincrement())
-  user                User        @relation(fields: [user_id_fk], references: [id])
-  user_id_fk          Int
-  organization_name   String      @db.VarChar(50)
-  contact_person      String      @db.VarChar(100)
-  type                String      @db.VarChar(20)
-  email               String      @db.VarChar(50)
-  identity_document   String      @db.VarChar(30)
-  whatsapp            String      @db.VarChar(20)
-  contact_number      String      @db.VarChar(20)
-  first_contract_date DateTime
-  last_contract_date  DateTime
+  id                 Int         @id @default(autoincrement())
+  user               User        @relation(fields: [user_id_fk], references: [id])
+  user_id_fk         Int
+  organization_name  String      @db.VarChar(50)
+  contact_person     String      @db.VarChar(100)
+  type               String      @db.VarChar(20)
+  email              String      @db.VarChar(50)
+  identity_document  String      @db.VarChar(30)
+  whatsapp           String      @db.VarChar(20)
+  contact_number     String      @db.VarChar(20)
+  first_contact_date DateTime
+  last_contact_date  DateTime
   // Relación con la tabla Quotation
-  quotation           Quotation[]
+  quotation          Quotation[]
 }
 
 // Modelo de Servicio
@@ -74,10 +82,8 @@ model Quotation {
   bank                String   @db.VarChar(50)
   bank_code           Decimal  @db.Decimal(20, 0)
   interbank_code      Decimal  @db.Decimal(20, 0)
-  detraction_account  Decimal  @db.Decimal(20, 0)
-
-  //Relación al Stage model
-  stage Stage[]
+  detraction_account  Decimal  @db.Decimal(20, 0) //Relación al Stage model
+  stage               Stage[]
 }
 
 //Modelo Etapa
@@ -108,11 +114,11 @@ model CompanyData {
 
 // Modelo Datos Bancarios
 model BankData {
-  id                 Int         @id @default(autoincrement())
-  company_data       CompanyData @relation(fields: [company_data_id_fk], references: [id])
-  company_data_id_fk Int
-  bank_name          String      @db.VarChar(50)
-  bank_code          Decimal     @db.Decimal(20, 0)
-  interbank_code     Decimal     @db.Decimal(20, 0)
-  currency_type      String      @db.VarChar(20)
+  id              Int         @id @default(autoincrement())
+  bank_name       String      @db.VarChar(50)
+  bank_code       Decimal     @db.Decimal(20, 0)
+  interbank_code  Decimal     @db.Decimal(20, 0)
+  currency_type   String      @db.VarChar(20)
+  company_data    CompanyData @relation(fields: [company_data_id], references: [id])
+  company_data_id Int
 }

@@ -17,8 +17,9 @@ import {
 
 export class ProspectDataSourceImpl implements ProspectDataSource {
   async showAllProspects(): Promise<ServerResponseEntity["props"]> {
+    //posibilidad de añadir filtros a la búsqueda
     try {
-      // Aqui va la lógica de showAllProspect : obtener prospectos
+      //Aqui va la lógica de showAllProspect : obtener prospectos
       const prospectArray = await this.getAllProspects();
       if (!prospectArray) throw CustomError.notFound("Prospects not found");
       const arrayProspectToEntity = prospectArray.map(
@@ -43,9 +44,9 @@ export class ProspectDataSourceImpl implements ProspectDataSource {
     try {
       const { id } = idDto;
       const prospect = await this.getProspectById(id);
-      // Condición para evitar valor nulo de prospect.
+      //Condición para evitar valor nulo de prospect.
       if (!prospect) throw CustomError.notFound("Prospect not found");
-      // mapper a Json
+      //mapper a Json
       const prospectToEntity = ProspectEntityMapper.prospectsToJson(prospect);
 
       return ServerResponseEntity.fromObject({
@@ -64,7 +65,7 @@ export class ProspectDataSourceImpl implements ProspectDataSource {
     createProspectDto: CreateProspectDto
   ): Promise<ServerResponseEntity["props"]> {
     try {
-      // Destructurar el dto para comprobar el email
+      //Destructurar el dto para comprobar el email
       const {
         user_id,
         organization_name,
@@ -73,8 +74,8 @@ export class ProspectDataSourceImpl implements ProspectDataSource {
         email,
         identity_document,
         whatsapp,
-        first_contract_date,
-        last_contract_date,
+        first_contact_date,
+        last_contact_date,
       } = createProspectDto;
       const existProspect = await this.getProspectByDni(identity_document);
       if (existProspect)
@@ -89,9 +90,8 @@ export class ProspectDataSourceImpl implements ProspectDataSource {
           email,
           identity_document,
           whatsapp,
-          first_contract_date,
-          last_contract_date,
-          contact_number: whatsapp,
+          first_contact_date,
+          last_contact_date,
         },
       });
       return ServerResponseEntity.fromObject({
@@ -113,11 +113,11 @@ export class ProspectDataSourceImpl implements ProspectDataSource {
     try {
       const { id } = prospectId;
       const existProspect = await this.getProspectById(id);
-      // Si el prospecto no existe se lanza error
+      //Si el prospecto no existe se lanza error
       if (!existProspect) throw CustomError.notFound("Prospect not found");
 
       const updatedProspect = await prisma.prospect.update({
-        where: { id },
+        where: { id: id },
         data: updatedFields,
       });
 
@@ -158,7 +158,7 @@ export class ProspectDataSourceImpl implements ProspectDataSource {
     }
   }
 
-  // MÉTODOS CRUD
+  //METODOS CRUD
   private async getAllProspects() {
     try {
       const prospectArray = await prisma.prospect.findMany({
@@ -169,7 +169,7 @@ export class ProspectDataSourceImpl implements ProspectDataSource {
           type: true,
           identity_document: true,
           whatsapp: true,
-          last_contract_date: true,
+          last_contact_date: true,
         },
       });
       return prospectArray;
@@ -203,8 +203,8 @@ export class ProspectDataSourceImpl implements ProspectDataSource {
           email: true,
           identity_document: true,
           whatsapp: true,
-          first_contract_date: true,
-          last_contract_date: true,
+          first_contact_date: true,
+          last_contact_date: true,
         },
       });
       return prospect;
